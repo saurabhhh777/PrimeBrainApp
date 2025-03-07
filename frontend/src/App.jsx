@@ -7,22 +7,25 @@ import Signup from './components/pages/Signup.jsx';
 import Home from './components/pages/Home.jsx';
 import Content from './components/pages/Content.jsx';
 import Profile from './components/pages/Profile.jsx';
+import Hnavbar from './components/NavbarPage/Hnavbar.jsx';
+import Setting from './components/pages/Setting.jsx';
 
 const App = () => {
   return (
     <div>
-
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/content" element={<Content />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Hnavbar />
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/content" element={<Content />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Setting />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </Router>
     </div>
   )
 }
