@@ -1,6 +1,5 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
 import UserModel from "../models/user.model.js";
 
 
@@ -28,18 +27,26 @@ export const Signup = async (req, res) => {
       });
     }
 
-    const doublepassword = await bcrypt.hash(password, 12);
+    const doublepassword = bcryptjs.hash(password, process.env.PASSWORD_HASH_VALUE);
 
-    await UserModel.create({
+    const user = await UserModel.create({
       fullname: fullname,
       email: email,
       password: doublepassword,
     });
 
-    return res.status(200).json({
-      message: "Register successfully !",
-      success: true,
+    const token =  jwt.sign({
+      id:user._id,
+    },process.env.JWT_SECRET,{expiresIn:"7d"
     });
+
+    return res.status(200).cookie("token",token,{
+      maxAge:7*24*60*60*1000,
+    }).json({
+      message:"Signup successfully !",
+      success:true
+    });
+  
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -54,7 +61,7 @@ export const Signup = async (req, res) => {
 
 //user login controller
 
-export const Login = async (req, res) => {
+export const Signin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -69,7 +76,7 @@ export const Login = async (req, res) => {
       });
     }
 
-    const isOkay = bcrypt.compare(password, isUser.password);
+    const isOkay = bcryptjs.compare(password, isUser.password);
 
     if (!isOkay) {
       return res.status(400).json({
@@ -136,7 +143,7 @@ export const Logout = ()=>{
 
 
 //updating user name 
-export const updateProfile = async(req, res) => {
+export const updateProfileName = async(req, res) => {
   try {
     const fullname = req.body.fullname;
 
@@ -208,99 +215,30 @@ export const checkAuth = async (req,res)=>{
 
 export const updatePass = async(req,res)=>{
   try {
-    // const password = req.body.password;
+    const password = req.body.password;
 
     const id = req.user.id;
 
-    const isUser = await UserModel.findById(id);
+    const doublePassword = bcryptjs.hash(password,process.env.PASSWORD_HASH_VALUE);
 
-    if(!isUser){
-      return res.status(400).json({
-        message:"User not exist !",
-        success:false
-      });
-    }
-
-    const userGmail = isUser.email;
-
-    // const newPassword = await bcrypt.hash(password,12);
-
-    const transporter = nodemailer.createTransport({
-      host:`smtp.gmail.com`,
-      port:465,
-      secure:true,
-      auth:{
-        user:`${process.env.GMAIL}`,
-        pass:`${process.env.GMAIL_PASS}`,
-
-      },
-
-    });
-
-    const otp = async()=>{
-      let real_otp = Math.floor(Math.random()*10000);
-      isUser.otp = real_otp;
-      await isUser.save();
-      return real_otp;
-    }
-
-    const mailOptions = {
-      from:`"Saurabh Maurya" <${process.env.GMAIL}>`,
-      to:`${userGmail}`,
-      subject:`Hello from BrainlyApp`,
-      text:`This is a plan text mail body`,
-      html:`<b>This is a OTP for Brainly Password reset ${otp()}</b>`
-    };
-
-
-    await transporter.sendMail(mailOptions);
-
-    console.log(`Your new Password is : ${password}`);
-
-    return res.status(200).json({
-      message:"email sent successfully !", 
-      success:true,
-    });
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message:"Server error , please try again later !",
-      success:false,
-    });
-  }
-}
-
-
-//for creating the new password 
-export const newPass = async(req,res)=>{
-  try {
-    const newPaword = req.body.password;
-
-    const id = req.user.id;
-
-    const isUser = await isUser.findById(id);
-
-    if(!isUser){
-      return res.status(400).json({
-        message:"User not exist !",
-        success:false
-      });
-    }
-
-    const doubleNewPass = await bcrypt.hash(newPaword,12);
-
-    const filter = {_id:id};
-    const update = {$set: {password:`${doubleNewPass}`}}; 
-
-    await UserModel.updateOne(filter,update);
-
-    return res.status(200).json({
-      message:"Password update successfully !",
-      success:true,
-    });
+    const isUser = await UserModel.findOneAndUpdate(
+      {_id:id},
+      {$set:{password:doublePassword}},
+      {new:true}
+    ).select("-password","-otp");
     
+    if(!isUser){
+      return res.status(400).json({
+        message:"User not found !",
+        isUser, 
+        success:false,
+      });
+    }
 
+    return res.status(200).json({
+      message:"Password updated successfully !",
+      success:true,
+    });
 
   } catch (error) {
     console.log(error);
@@ -310,6 +248,8 @@ export const newPass = async(req,res)=>{
     });
   }
 }
+
+
 
 
 

@@ -1,33 +1,44 @@
 import mongoose, { Types } from "mongoose";
 
-const contentTypes = ['image','video','article','audio'];
+const contentTypes = ['image', 'video', 'article', 'audio'];
 
 const contentSchema = new mongoose.Schema({
-    link:{
-        type:String,
-        required:true,
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+        required: true,
     },
-    type:{
-        type:String,
-        emum:contentTypes,
-        required:true
+    link: {
+        type: String,
+        required: true,
     },
-    title:{
-        type:String,
-        required:true,
+    type: {
+        type: String,
+        enum: contentTypes, // Fixed typo: 'emum' -> 'enum'
+        required: true
     },
-    tags:[{
-        type:Types.ObjectId,
-        ref:"Tag",
+    title: {
+        type: String,
+        required: true,
+    },
+    tags: [{
+        type: Types.ObjectId,
+        ref: "Tag",
+        required: false // Made explicit that tags are optional
     }],
-    userId:{
-        type:Types.ObjectId,
-        ref:"User",
-        required:true,
+    createdAt: { // Added timestamp
+        type: Date,
+        default: Date.now
     }
+}, {
+    timestamps: true // Added timestamps option for createdAt/updatedAt
 });
 
+// Add indexes for common queries
+contentSchema.index({ user: 1 });
+contentSchema.index({ type: 1 });
+contentSchema.index({ tags: 1 });
 
-const contentModel = mongoose.model("Content",contentSchema);
+const ContentModel = mongoose.model("Content", contentSchema); // Fixed model name casing
 
-export default contentModel;
+export default ContentModel;

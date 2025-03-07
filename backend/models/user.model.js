@@ -14,9 +14,16 @@ const userSchema = new mongoose.Schema({
     },
     otp:{
         type:Number
-    }
-
-});
+    },
+    links:[{
+        type:mongoose.Types.ObjectId,
+        ref:"Link",
+    }],
+    contents:[{
+        type:mongoose.Types.ObjectId,
+        ref:"Content",
+    }],
+},{timestamps:true});
 
 const UserModel = mongoose.model("User",userSchema);
 
