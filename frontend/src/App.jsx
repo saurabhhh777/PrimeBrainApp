@@ -9,16 +9,16 @@ import Content from './components/pages/Content.jsx';
 import Profile from './components/pages/Profile.jsx';
 import Hnavbar from './components/NavbarPage/Hnavbar.jsx';
 import Setting from './components/pages/Setting.jsx';
+import Blog from './components/pages/Blog.jsx';
+
 
 const App = () => {
   return (
     <div>
       <Router>
-        <Hnavbar />
-        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Signin />} />
+          <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/content" element={<Content />} />
           <Route path="/profile" element={<Profile />} />

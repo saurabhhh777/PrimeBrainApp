@@ -3,4 +3,26 @@
 @theme {
     --font-poppins: "Poppins", "sans-serif"; 
     --font-jost: "Jost", "sans-serif";
+    --font-anton:"Anton","sans-serif";
+    --font-righteous:"Righteous","sans-serif";
+    --font-popomar:"Ponomar", "system-ui";
+    --font-rock:"Rock Salt","cursive";
+    --font-shafarik:"Shafarik","system-ui";
+    --font-emblemaOne:"Emblema One","system-ui";
+    --font-monoton:"Monoton","sans-serif";
+    --font-doto:"Doto","sans-serif";
+    --font-spicyRice:"Spicy Rice","serif";
+    --font-librebarcode39extendedtext:"Libre Barcode 39 Extended Text", "system-ui";
+
+    
+  }
+
+/* for change the direction of the font or something else */
+  .rtl-text{
+    direction: rtl;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl; /* vertical right-to-left (common for East Asian scripts) */
+    text-orientation: upright; /* keeps characters upright in many browsers */
   }

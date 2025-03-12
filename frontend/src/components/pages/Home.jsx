@@ -1,13 +1,16 @@
 import React from 'react'
+import Main from './Main';
+import Middle from './Middle';
+import Footer from "./Footer";
 // import Layout from './Layout.jsx'
 
 const Home = () => {
   return (
-    // <Layout>
-      <div className="w-full">
-        This is Home Page !
+      <div className=''>
+        <Main/>
+        <Middle/>
+        <Footer/>
       </div>
-    // </Layout>
   )
 }
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { userAuthStore } from '../../../store/userAuthStore';
+import { Rabbit,Sun,Moon } from "lucide-react";
 
 
 const Navbar = () => {
@@ -11,7 +12,7 @@ const Navbar = () => {
       <div className="flex flex-col space-y-8">
         <div>
           <Link to="/">
-            <h2 className="text-2xl font-bold font-poppins">Logo</h2>
+            <h2 className="text-2xl font-bold font-poppins"><Rabbit/></h2>
           </Link>
         </div>
         <div className="flex flex-col space-y-6 font-jost text-xl">

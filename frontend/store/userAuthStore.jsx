@@ -1,13 +1,22 @@
 import {create} from "zustand";
+import {persist} from "zustand/middleware";
 import {toast} from "react-toastify";
 import { axiosInstance } from "../lib/axios.jsx";
 
-export const userAuthStore = create((set) => ({
+export const userAuthStore = create(persist((set) => ({
     Authuser: null,
     isLogined: false,
     isSignedUp: false,
     isUpdateProfile: false,
     isCheckingAuth: true,
+
+    isDarkMode:true,
+
+    toggleDarkMode:(state)=>{
+        set((state)=>({isDarkMode: !state.isDarkMode}));
+        console.log(state.isDarkMode);
+    },
+
 
     temp:true,
 
@@ -101,4 +110,4 @@ export const userAuthStore = create((set) => ({
             set({isUpdateProfile: false});
         }
     }
-}));
+})));
