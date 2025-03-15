@@ -1,10 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React,{useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { userAuthStore } from "../../../store/userAuthStore";
 import DarkModeBtn from "../Buttons/DarkModeBtn";
+import { toast } from "react-toastify";
+
 
 const Signup = () => {
-  const { isDarkMode, toggleDarkMode } = userAuthStore();
+  const { isDarkMode, toggleDarkMode,signup,Authuser} = userAuthStore();
+
+  const navigate = useNavigate();
+
+  const [fordata,setFormdata] = useState({
+    fullname:"",
+    email:"",
+    password:""
+  });
+
+
+  const handleChange =(e)=>{
+    e.preventDefault();
+    const { name, value } = e.target;
+    setFormdata((data) => ({
+      ...data,
+      [name]: value
+    }));
+  }
+
+  
+  const handleSubmit = ()=>{
+    if(signup(fordata)){
+
+      //debug user details
+      console.log(Authuser.newUser.user);
+
+      toast.success("Signup Successfully")
+      navigate("/dashboard");
+    }
+  }
+
+
 
   return (
     <div
@@ -36,6 +70,10 @@ const Signup = () => {
                   ? "bg-gray-600 border-gray-500 text-white"
                   : "bg-white border-gray-300 text-black"
               }`}
+              name="fullname"
+              value={fordata.fullname}
+
+              onChange={handleChange}
           />
           <input
             type="email"
@@ -46,6 +84,12 @@ const Signup = () => {
                   ? "bg-gray-600 border-gray-500 text-white"
                   : "bg-white border-gray-300 text-black"
               }`}
+
+              name="email"
+              value={FormData.email}
+
+              onChange={handleChange}
+
           />
           <input
             type="password"
@@ -56,6 +100,11 @@ const Signup = () => {
                   ? "bg-gray-600 border-gray-500 text-white"
                   : "bg-white border-gray-300 text-black"
               }`}
+
+              name="password"
+              value={FormData.password}
+              onChange={handleChange}
+
           />
           <button
             className={`rounded px-4 py-2 mt-2 
@@ -64,6 +113,8 @@ const Signup = () => {
                   ? "bg-emerald-600 text-white"
                   : "bg-emerald-600 text-white"
               }`}
+
+              onClick={handleSubmit}
           >
             Sign Up
           </button>

@@ -47,7 +47,7 @@ const Middle = () => {
       animate={controls}
       ref={ref}
     >
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl" id="features">
         <motion.h2
           className="font-poppins mb-12 text-center text-3xl font-bold md:text-5xl"
           initial={{ opacity: 0, y: -50 }}

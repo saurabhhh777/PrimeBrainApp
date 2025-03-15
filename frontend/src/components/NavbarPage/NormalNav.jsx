@@ -5,27 +5,26 @@ import { userAuthStore } from "../../../store/userAuthStore";
 import DarkModeBtn from "../Buttons/DarkModeBtn";
 
 const NormalNav = () => {
-  const { isDarkMode } = userAuthStore();
+  const { isDarkMode, Authuser } = userAuthStore();
 
   return (
     <div>
-      <div className={`flex items-center justify-between border-2 ml-3 mr-3 rounded-xl h-12 ${
-            isDarkMode ? 
-              "bg-gray-600 border-gray-500 text-white" : 
-              "bg-[#e4e4e4] border-gray-300"
-          }`}>
+      <div
+        className={`flex items-center justify-between border-2 ml-3 mr-3 rounded-xl h-12 ${
+          isDarkMode
+            ? "bg-gray-600 border-gray-500 text-white"
+            : "bg-[#e4e4e4] border-gray-300"
+        }`}
+      >
         <Link to="/">
-        <Rabbit
-          size={"30"}
-          className={`w-28 rounded-xl h-10 ${
-            isDarkMode ? 
-              "bg-gray-600 border-gray-500 text-white" : 
-              "bg-[#e4e4e4] border-gray-300"
-          }`
-        }
-        />
-
-        
+          <Rabbit
+            size={"30"}
+            className={`w-28 rounded-xl h-10 ${
+              isDarkMode
+                ? "bg-gray-600 border-gray-500 text-white"
+                : "bg-[#e4e4e4] border-gray-300"
+            }`}
+          />
         </Link>
 
         <div
@@ -38,12 +37,22 @@ const NormalNav = () => {
           <h2>
             <Link to="/blogs">Blogs</Link>
           </h2>
-          <h2>
-            <Link to="/signin">Signin</Link>
-          </h2>
-          <h2>
-            <Link to="/signup">Signup</Link>
-          </h2>
+          {Authuser ? (
+            <div>
+              <h2>
+                <Link to="/dashboard">Dashboard</Link>
+              </h2>
+            </div>
+          ) : (
+            <div>
+              <h2>
+                <Link to="/signin">Signin</Link>
+              </h2>
+              <h2>
+                <Link to="/signup">Signup</Link>
+              </h2>
+            </div>
+          )}
           <h2>
             <DarkModeBtn />
           </h2>

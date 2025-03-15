@@ -1,11 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { data, Link } from "react-router-dom";
 import { userAuthStore } from "../../../store/userAuthStore";
 import DarkModeBtn from "../Buttons/DarkModeBtn";
 
 const Signin = () => {
   // Extract both the isDarkMode boolean and the toggleDarkMode function
-  const { isDarkMode, toggleDarkMode } = userAuthStore();
+  const { isDarkMode, toggleDarkMode,signin } = userAuthStore();
+
+  const [formdata , setFormdata] = useState({
+    email:"",
+    password:""
+  });
+  
+
+  const handleChange = (e)=>{
+    const { name, value } = e.target;
+    setFormdata((data)=>({
+      ...data,[name]:value
+    }))
+  }
+
+  const handleSubmit = ()=>{
+    signin(data);
+  }
 
   return (
     <div
@@ -30,14 +47,26 @@ const Signin = () => {
             placeholder="example@gmail.com"
             className={`border-2 rounded w-full p-2 
               ${isDarkMode ? "bg-gray-600 border-gray-500 text-white" : "bg-white border-gray-300 text-black"}`}
+
+              name="email"
+              value={formdata.email}
+              onChange={handleChange}
+
           />
           <input
             type="password"
             placeholder="John@123"
             className={`border-2 rounded w-full p-2
               ${isDarkMode ? "bg-gray-600 border-gray-500 text-white" : "bg-white border-gray-300 text-black"}`}
+
+              name="password"
+              value={formdata.password}
+              onChange={handleChange}
+
           />
-          <button className="bg-emerald-600 text-white rounded px-4 py-2 mt-2">
+          <button className="bg-emerald-600 text-white rounded px-4 py-2 mt-2"
+            onClick={handleSubmit}
+          >
             Sign In
           </button>
 
