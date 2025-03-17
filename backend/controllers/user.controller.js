@@ -1,9 +1,13 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import passport from "passport";
+import dotenv from "dotenv";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import { Strategy as GitHubStrategy } from "passport-github2";
+// import { Strategy as GitHubStrategy } from "passport-github2";
 import UserModel from "../models/user.model.js";
+
+dotenv.config();
+
 
 // Google OAuth Configuration
 passport.use(new GoogleStrategy({
@@ -33,31 +37,31 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-// GitHub OAuth Configuration
-passport.use(new GitHubStrategy({
-    clientID: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "/auth/github/callback"
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      let user = await UserModel.findOne({ githubId: profile.id });
+// // GitHub OAuth Configuration
+// passport.use(new GitHubStrategy({
+//     clientID: process.env.GITHUB_CLIENT_ID,
+//     clientSecret: process.env.GITHUB_CLIENT_SECRET,
+//     callbackURL: "/auth/github/callback"
+//   },
+//   async (accessToken, refreshToken, profile, done) => {
+//     try {
+//       let user = await UserModel.findOne({ githubId: profile.id });
       
-      if (!user) {
-        user = await UserModel.create({
-          fullname: profile.displayName || profile.username,
-          email: profile.emails?.[0]?.value || `${profile.username}@github.com`,
-          password: bcryptjs.hashSync(Math.random().toString(36), 10),
-          githubId: profile.id
-        });
-      }
+//       if (!user) {
+//         user = await UserModel.create({
+//           fullname: profile.displayName || profile.username,
+//           email: profile.emails?.[0]?.value || `${profile.username}@github.com`,
+//           password: bcryptjs.hashSync(Math.random().toString(36), 10),
+//           githubId: profile.id
+//         });
+//       }
       
-      return done(null, user);
-    } catch (error) {
-      return done(error, null);
-    }
-  }
-));
+//       return done(null, user);
+//     } catch (error) {
+//       return done(error, null);
+//     }
+//   }
+// ));
 
 // OAuth controller methods
 export const googleAuth = passport.authenticate('google', {
@@ -66,10 +70,21 @@ export const googleAuth = passport.authenticate('google', {
 
 export const googleAuthCallback = (req, res, next) => {
   passport.authenticate('google', async (err, user) => {
-    if (err) return next(err);
-    
+    if (err) {
+      return res.status(500).json({
+        message: "Authentication failed",
+        success: false
+      });
+    }
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found or could not be created",
+        success: false
+      });
+    }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-    
+
     return res.status(200).cookie("token", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     }).json({
@@ -79,24 +94,24 @@ export const googleAuthCallback = (req, res, next) => {
   })(req, res, next);
 };
 
-export const githubAuth = passport.authenticate('github', {
-  scope: ['user:email']
-});
+// export const githubAuth = passport.authenticate('github', {
+//   scope: ['user:email']
+// });
 
-export const githubAuthCallback = (req, res, next) => {
-  passport.authenticate('github', async (err, user) => {
-    if (err) return next(err);
+// export const githubAuthCallback = (req, res, next) => {
+//   passport.authenticate('github', async (err, user) => {
+//     if (err) return next(err);
     
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
     
-    return res.status(200).cookie("token", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    }).json({
-      message: "GitHub login successful!",
-      success: true
-    });
-  })(req, res, next);
-};
+//     return res.status(200).cookie("token", token, {
+//       maxAge: 7 * 24 * 60 * 60 * 1000,
+//     }).json({
+//       message: "GitHub login successful!",
+//       success: true
+//     });
+//   })(req, res, next);
+// };
 
 // User Signup controller
 export const Signup = async (req, res) => {
@@ -133,9 +148,15 @@ export const Signup = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    const newUser = {
+      user:user.fullname,
+      email:user.email
+    }
+
     return res.status(200).cookie("token", token, {
       maxAge: 7 * 24 * 60 * 60 * 1000
     }).json({
+      newUser,
       message: "Signup successful!",
       success: true
     });

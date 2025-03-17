@@ -1,6 +1,6 @@
 import React from "react";
 import { MoveRight, Github, Linkedin, Twitter } from "lucide-react";
-import { userAuthStore } from "../../../store/userAuthStore";
+import { userAuthStore } from "../../store/userAuthStore";
 import { Link } from "react-router-dom";
 
 const mypic =

@@ -1,20 +1,20 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  
-import Navbar from './components/NavbarPage/Navbar.jsx';
-import ErrorPage from './components/pages/ErrorPage.jsx';
-import Signin from './components/pages/Signin.jsx';
-import Signup from './components/pages/Signup.jsx';
-import Home from './components/pages/Home.jsx';
-import Content from './components/pages/Content.jsx';
-import Profile from './components/pages/Profile.jsx';
-import Hnavbar from './components/NavbarPage/Hnavbar.jsx';
-import Setting from './components/pages/Setting.jsx';
-import Blog from './components/pages/Blog.jsx';
-import Pricing from './components/pages/Pricing.jsx';
-import About from './components/pages/About.jsx';
-import Dashboard from './components/pages/Dashboard.jsx';
-import LinkPage from './components/pages/LinkPage.jsx';
-import TermsOfService from './components/pages/TermsOfService.jsx';
+// import Navbar from './NavbarPage/Navbar.jsx';
+import ErrorPage from './pages/ErrorPage.jsx';
+import Signin from './pages/Signin.jsx';
+import Signup from './pages/Signup.jsx';
+import Home from './pages/Home.jsx';
+import Content from './pages/Content.jsx';
+import Profile from './pages/Profile.jsx';
+// import Hnavbar from './NavbarPage/Hnavbar.jsx';
+import Setting from './pages/Setting.jsx';
+import Blog from './pages/Blog.jsx';
+import Pricing from './pages/Pricing.jsx';
+import About from './pages/About.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import LinkPage from './pages/LinkPage.jsx';
+import TermsOfService from './pages/TermsOfService.jsx';
 // import PrivacyPolicy from './components/pages/PrivacyPolicy.jsx';
 
 

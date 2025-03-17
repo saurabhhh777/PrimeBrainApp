@@ -1,6 +1,6 @@
 import React from "react";
-import { userAuthStore } from "../../../store/userAuthStore";
-import DarkModeBtn from "../Buttons/DarkModeBtn";
+import { userAuthStore } from "../../store/userAuthStore";
+import DarkModeBtn from "../components/Buttons/DarkModeBtn";
 import { MoveIcon, MoveLeft } from "lucide-react";
 
 const TermsOfService = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { data, Link } from "react-router-dom";
-import { userAuthStore } from "../../../store/userAuthStore";
-import DarkModeBtn from "../Buttons/DarkModeBtn";
+import { userAuthStore } from "../../store/userAuthStore";
+import DarkModeBtn from "../components/Buttons/DarkModeBtn";
 
 const Signin = () => {
   // Extract both the isDarkMode boolean and the toggleDarkMode function

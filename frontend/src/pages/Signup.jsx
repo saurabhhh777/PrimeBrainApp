@@ -1,12 +1,13 @@
 import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { userAuthStore } from "../../../store/userAuthStore";
-import DarkModeBtn from "../Buttons/DarkModeBtn";
+import { userAuthStore } from "../../store/userAuthStore";
+import DarkModeBtn from "../components/Buttons/DarkModeBtn";
 import { toast } from "react-toastify";
 
 
+
 const Signup = () => {
-  const { isDarkMode, toggleDarkMode,signup,Authuser} = userAuthStore();
+  const { isDarkMode, toggleDarkMode,signup,Authuser,googleAuth} = userAuthStore();
 
   const navigate = useNavigate();
 
@@ -24,6 +25,10 @@ const Signup = () => {
       ...data,
       [name]: value
     }));
+  }
+
+  const handleGoogleSignup = ()=>{
+    googleAuth();
   }
 
   
@@ -132,6 +137,11 @@ const Signup = () => {
             </span>
           </p>
         </div>
+      </div>
+      <div className="flex flex-col items-center justify-center h-96 w-96 rounded-2xl border-2">
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={handleGoogleSignup}>
+          Sign in with Google
+        </button>
       </div>
     </div>
   );

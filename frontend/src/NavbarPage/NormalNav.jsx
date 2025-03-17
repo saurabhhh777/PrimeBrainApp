@@ -1,8 +1,8 @@
 import React from "react";
 import { Rabbit } from "lucide-react";
 import { Link } from "react-router-dom";
-import { userAuthStore } from "../../../store/userAuthStore";
-import DarkModeBtn from "../Buttons/DarkModeBtn";
+import { userAuthStore } from "../../store/userAuthStore";
+import DarkModeBtn from "../components/Buttons/DarkModeBtn";
 
 const NormalNav = () => {
   const { isDarkMode, Authuser } = userAuthStore();

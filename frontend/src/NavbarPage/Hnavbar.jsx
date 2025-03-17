@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import { Search, ChevronDown, ChevronUp, LogOut, User, Settings } from "lucide-react";
-import { userAuthStore } from "../../../store/userAuthStore.jsx";
-import { Link } from "react-router-dom";
+import { userAuthStore } from "../../store/userAuthStore.jsx";
+import { Link ,useNavigate} from "react-router-dom";
+
 
 const Hnavbar = () => {
   const { Authuser, isDarkMode,logout } = userAuthStore();
   const [open, setOpen] = useState(false);
 
+  const navigate = useNavigate();
+
+
   function handleLogout() {
     console.log("logout");
     logout();
+    navigate("/");
   }
 
   return (

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import NormalNav from "../NavbarPage/NormalNav";
-import { userAuthStore } from "../../../store/userAuthStore";
+import { userAuthStore } from "../../store/userAuthStore";
 
 const Main = () => {
   const { isDarkMode } = userAuthStore();

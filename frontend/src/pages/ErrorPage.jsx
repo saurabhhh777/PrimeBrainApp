@@ -1,5 +1,5 @@
 import React from 'react';
-import { userAuthStore } from '../../../store/userAuthStore';
+import { userAuthStore } from '../../store/userAuthStore';
 
 function ErrorPage() {
   const { isDarkMode } = userAuthStore();

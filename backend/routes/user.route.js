@@ -1,5 +1,5 @@
 import express from "express";
-import { Signin, Signup, updateProfileName,updatePass,googleAuth,googleAuthCallback,githubAuth,githubAuthCallback,Logout,checkAuth } from "../controllers/user.controller.js";
+import { Signin, Signup, updateProfileName,updatePass,Logout,checkAuth,googleAuth,googleAuthCallback } from "../controllers/user.controller.js";
 const router = express.Router();
 import { isAuth } from "../middleware/Authentication.middle.js";
 import { sendOTPtoMail } from "../middleware/SendOTP.middle.js";
@@ -12,8 +12,8 @@ router.route("/logout").post(Logout);
 
 router.get('/auth/google', googleAuth);
 router.get('/auth/google/callback', googleAuthCallback);
-router.get('/auth/github', githubAuth);
-router.get('/auth/github/callback', githubAuthCallback);
+// router.get('/auth/github', githubAuth);
+// router.get('/auth/github/callback', githubAuthCallback);
 
 
 router.route("/check",isAuth).get(checkAuth);

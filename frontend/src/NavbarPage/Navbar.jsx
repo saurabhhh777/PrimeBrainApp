@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { userAuthStore } from '../../../store/userAuthStore';
+import { userAuthStore } from '../../store/userAuthStore';
 import { Rabbit, Sun, Moon } from "lucide-react";
 
 const Navbar = () => {

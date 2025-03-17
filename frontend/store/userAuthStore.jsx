@@ -39,8 +39,7 @@ export const userAuthStore = create(persist((set) => ({
         try {
             res = await axiosInstance.post("/api/v1/user/signup", data);
             set({Authuser: res.data});
-            console.log(res);
-            toast.success("Signup successful");
+            return res;
         } catch (error) {
             console.log(error);
             // Fixed typo in error.response
@@ -109,5 +108,15 @@ export const userAuthStore = create(persist((set) => ({
         } finally {
             set({isUpdateProfile: false});
         }
+    },
+
+    googleAuth: async () => {
+        try {
+            const res = await axiosInstance.get("/api/v1/user/auth/google");
+            window.location.href = res.data.url;
+        } catch (error) {
+            console.log(error);
+        }
     }
+
 })));
