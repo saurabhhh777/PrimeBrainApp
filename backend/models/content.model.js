@@ -11,15 +11,23 @@ const contentSchema = new mongoose.Schema({
     link: {
         type: String,
         required: true,
+        default:"",
     },
     type: {
         type: String,
         enum: contentTypes, // Fixed typo: 'emum' -> 'enum'
         required: true
     },
+    contentId:{
+        type:String,
+        required:true,
+    },
     title: {
         type: String,
         required: true,
+    },
+    description:{
+        type:String,
     },
     tags: [{
         type: Types.ObjectId,

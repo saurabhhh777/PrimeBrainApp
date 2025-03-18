@@ -117,6 +117,36 @@ export const userAuthStore = create(persist((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+
+    createContent:async (data)=>{
+        try {
+            const res = await axiosInstance.post("/api/v1/content/create",data);
+            console.log(res);
+            return res.data;
+
+        } catch (error) {
+            console.log(error);
+            
+        }
+
+    },
+
+    getAllContent:async()=>{
+        try {
+            const res = await axiosInstance.get("/api/v1/content/");
+            console.log(`State getAllContent all data :`);
+            console.log(res.data);
+            return res.data;
+            
+        } catch (error) {
+            console.log(error);
+            
+
+        }
+
+
     }
+
 
 })));

@@ -21,7 +21,7 @@ const tagSchema = new mongoose.Schema({
 });
 
 // Add an index on title for faster lookups
-tagSchema.index({ title: 1 });
+// tagSchema.index({ title: 1 });
 
 const TagModel = mongoose.model("Tag", tagSchema);
 

@@ -1,11 +1,51 @@
 import ContentModel from "../models/content.model.js";
 import TagModel from "../models/tags.model.js";
 import UserModel from "../models/user.model.js";
+import { createContentID } from "../utils/createContentID.js";
+
+ 
+export const getAllContent = async (req, res) => {
+  try {
+    const userID = req.user.id; // Get the user ID from the authenticated request
+    
+    console.log(`User id : ${userID}`);
+
+    // Find all content created by the user
+    const content = await ContentModel.find({ 
+      user:userID 
+    });
+
+
+    console.log(`User all content : ${content}`);
+
+    // If no content is found, return a message
+    if (!content || content.length === 0) {
+      return res.status(404).json({
+        message: 'No content found for this user',
+        success: false,
+      });
+    }
+
+    // Return the content
+    return res.status(200).json({
+      message: 'Content retrieved successfully',
+      success: true,
+      data: content,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      message: 'Server error, please try again later',
+      success: false,
+    });
+  }
+};
+
 
 // Create new content
 export const createContent = async (req, res) => {
   try {
-    const { link, type, title, tags } = req.body;
+    const { link, type, title, tags,description } = req.body;
     const userId = req.user.id;
 
     // Validate content type
@@ -38,9 +78,11 @@ export const createContent = async (req, res) => {
     // Create content
     const content = await ContentModel.create({
       user: userId,
-      link,
-      type,
+      contentId:createContentID(),
       title,
+      link,
+      description,
+      type,
       tags: tagIds
     });
 

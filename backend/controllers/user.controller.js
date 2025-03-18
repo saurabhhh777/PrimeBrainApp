@@ -10,32 +10,7 @@ dotenv.config();
 
 
 // Google OAuth Configuration
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
-  },
-  async (accessToken, refreshToken, profile, done) => {
-    try {
-      // Check if user already exists
-      let user = await UserModel.findOne({ email: profile.emails[0].value });
-      
-      if (!user) {
-        // Create new user if doesn't exist
-        user = await UserModel.create({
-          fullname: profile.displayName,
-          email: profile.emails[0].value,
-          password: bcryptjs.hashSync(Math.random().toString(36), 10), // Generate random password
-          googleId: profile.id
-        });
-      }
-      
-      return done(null, user);
-    } catch (error) {
-      return done(error, null);
-    }
-  }
-));
+
 
 // // GitHub OAuth Configuration
 // passport.use(new GitHubStrategy({
@@ -140,7 +115,7 @@ export const Signup = async (req, res) => {
       fullname,
       email,
       password: hashedPassword
-    });
+    }).populate("contents");
 
     const token = jwt.sign(
       { id: user._id },
