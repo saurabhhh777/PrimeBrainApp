@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { userAuthStore } from "../../store/userAuthStore";
 import DarkModeBtn from "../components/Buttons/DarkModeBtn";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 
 
 
@@ -33,13 +33,20 @@ const Signup = () => {
 
   
   const handleSubmit = ()=>{
-    if(signup(fordata)){
+
+    const res = signup(fordata);
+
+    if(res.success){
+      toast.success('signup Successfully !');
 
       //debug user details
       console.log(Authuser.newUser.user);
 
       toast.success("Signup Successfully")
       navigate("/dashboard");
+    }
+    else{
+      toast.error(`User already exist !`);
     }
   }
 
@@ -50,6 +57,7 @@ const Signup = () => {
       className={`flex items-center justify-center h-screen w-full text-center
         ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
     >
+      <Toaster/>
       <span className="absolute top-5 right-5">
         <DarkModeBtn onClick={toggleDarkMode} />
       </span>

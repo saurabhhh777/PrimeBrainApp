@@ -56,7 +56,10 @@ const Hnavbar = () => {
       {/* Profile Dropdown */}
       <div className={`relative flex items-center justify-between gap-2 rounded-full p-2 w-52 mr-2 border-2 ${
         isDarkMode ? "bg-gray-900 border-gray-700" : "bg-[#e4e4e4] border-gray-300"
-      }`}>
+      }`}
+      onClick={() => setOpen(!open)}
+      
+      >
         <img
           className="size-8 rounded-full border-2 border-gray-300"
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -64,7 +67,7 @@ const Hnavbar = () => {
         />
         <h2 className="font-jost">{Authuser.newUser.user}</h2>
         <button
-          onClick={() => setOpen(!open)}
+          // onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label="Toggle dropdown"
         >

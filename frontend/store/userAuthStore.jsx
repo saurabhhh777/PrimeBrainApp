@@ -141,12 +141,25 @@ export const userAuthStore = create(persist((set) => ({
             
         } catch (error) {
             console.log(error);
-            
-
+        
         }
 
+    },
+
+    updateContent:async(id,data)=>{
+        try {
+
+            console.log(`Content id from userAuth : ${id}`);
+
+            const res = await axiosInstance.put(`/api/v1/content/${id}`,data);
+            console.log(res);
+            return res.data;
+
+            
+        } catch (error) {
+            console.log(error);
+        }
 
     }
-
 
 })));

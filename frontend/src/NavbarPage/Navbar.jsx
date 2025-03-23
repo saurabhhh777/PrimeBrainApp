@@ -31,21 +31,25 @@ const Navbar = () => {
           <Link to="/">
             <h2 className="hover:text-gray-600">Home</h2>
           </Link>
-          <Link to="/dashboard/content">
-            <h2 className="hover:text-gray-600">Content</h2>
+          <Link to="/dashboard/article">
+            <h2 className="hover:text-gray-600">Article</h2>
           </Link>
-          <Link to="/link">
-            <h2 className="hover:text-gray-600">Links</h2>
+          <Link to="/dashboard/tweets">
+            <h2 className="hover:text-gray-600">Twitter</h2>
           </Link>
-          <Link to="/Video">
-            <h2 className="hover:text-gray-600">Videos</h2>
+          <Link to="/dashboard/youtube">
+            <h2 className="hover:text-gray-600">Youtube</h2>
           </Link>
-          <Link to="/tags">
-            <h2 className="hover:text-gray-600">Tags</h2>
+          <Link to="/dashboard/reddit">
+            <h2 className="hover:text-gray-600">Reddit</h2>
+          </Link>
+          <Link to="/dashboard/insta">
+            <h2 className="hover:text-gray-600">Instagram</h2>
           </Link>
           <Link to="/blog">
             <h2 className="hover:text-gray-600">Blogs</h2>
           </Link>
+          
           <Link to="/setting">
             <h2 className="hover:text-gray-600">Setting</h2>
           </Link>
