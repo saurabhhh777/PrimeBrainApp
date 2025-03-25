@@ -161,9 +161,15 @@ export const getContentById = async (req, res) => {
 // Update content
 export const updateContent = async (req, res) => {
   try {
-    const { contentId } = req.params;
+    const { id } = req.params;
+
+    console.log(`content id from backend : ${id}`);
+
     const { title, tags } = req.body;
     const userId = req.user.id;
+
+    
+    console.log(`From backend updateContent : ${id}`);
 
     // Process new tags if provided
     let tagIds = [];
@@ -184,7 +190,7 @@ export const updateContent = async (req, res) => {
     }
 
     const content = await ContentModel.findOneAndUpdate(
-      { _id: contentId, user: userId },
+      { contentId:id, user: userId },
       { 
         $set: { 
           title,

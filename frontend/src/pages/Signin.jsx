@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { data, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userAuthStore } from "../../store/userAuthStore";
 import DarkModeBtn from "../components/Buttons/DarkModeBtn";
+import toast, {Toaster } from "react-hot-toast";
 
 const Signin = () => {
+
+  const navigate = useNavigate();
+
   // Extract both the isDarkMode boolean and the toggleDarkMode function
   const { isDarkMode, toggleDarkMode,signin } = userAuthStore();
 
@@ -21,7 +25,20 @@ const Signin = () => {
   }
 
   const handleSubmit = ()=>{
-    signin(data);
+    const res = signin(formdata);
+    
+    if(res){
+
+      navigate("/");
+      toast.success("Login Successfully");
+
+    }
+    else{
+      toast.error(`{res.data.message}`);
+    }
+
+
+
   }
 
   return (
@@ -30,6 +47,8 @@ const Signin = () => {
         isDarkMode ? "bg-gray-800" : "bg-white"
       }`}
     >
+      <Toaster/>
+
       {/* Dark Mode button */}
       <span className="absolute top-5 right-5 ">
         <DarkModeBtn onClick={toggleDarkMode} />

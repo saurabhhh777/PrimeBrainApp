@@ -111,11 +111,15 @@ export const Signup = async (req, res) => {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    const user = await UserModel.create({
+    let user = await UserModel.create({
       fullname,
       email,
       password: hashedPassword
-    }).populate("contents");
+    });
+    
+    // Now populate on the returned document
+    user = await user.populate('contents');
+    
 
     const token = jwt.sign(
       { id: user._id },
@@ -150,7 +154,14 @@ export const Signin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    console.log(`Email from the backend : ${email}`);
+
     const user = await UserModel.findOne({ email });
+
+    console.log(`User from Signin controller :`)
+    console.log(user);
+
+    
 
     if (!user) {
       return res.status(400).json({
@@ -159,7 +170,7 @@ export const Signin = async (req, res) => {
       });
     }
 
-    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    const isPasswordValid = bcryptjs.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({

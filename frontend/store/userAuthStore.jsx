@@ -59,6 +59,10 @@ export const userAuthStore = create(persist((set) => ({
         set({isLogined: true});
 
         try {
+
+            console.log("console form userAuth for signin data");
+            console.log(data);
+
             res = await axiosInstance.post("/api/v1/user/signin", data);
             console.log(res);
             set({Authuser: res.data});
