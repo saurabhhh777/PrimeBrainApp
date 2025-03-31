@@ -6,7 +6,6 @@ const Instagram = () => {
   const { getAllContent, isDarkMode } = userAuthStore();
   const [allContent, setAllContent] = useState([]);
 
-  // Fetch content from your store
   const loadContent = async () => {
     try {
       const res = await getAllContent();
@@ -28,10 +27,11 @@ const Instagram = () => {
     loadContent();
   }, []);
 
-  // Filter items for "instagram.com" in the link
   const instaCards = allContent.filter(
     (item) => item.link && item.link.includes("instagram.com")
   );
+
+  const isVideo = (link) => link.includes("/reel/") || link.includes("/p/");
 
   return (
     <Layout>
@@ -46,14 +46,22 @@ const Instagram = () => {
                 : "bg-white border border-gray-200 text-[#101828]"
             } rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300`}
           >
-            {/* Example fallback image */}
-            <img
-              src="https://via.placeholder.com/300"
-              alt={card.title || "Instagram Content"}
-              className="w-full h-48 object-cover"
-            />
+            {isVideo(card.link) ? (
+              <iframe
+                src={`${card.link}/embed`}
+                width="100%"
+                height="480"
+                frameBorder="0"
+                allowFullScreen
+              ></iframe>
+            ) : (
+              <img
+                src={card.image || "https://via.placeholder.com/300"}
+                alt={card.title || "Instagram Content"}
+                className="w-full h-48 object-cover"
+              />
+            )}
             <hr />
-
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-2">
                 {card.title || "Untitled Instagram Post"}

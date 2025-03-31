@@ -15,7 +15,7 @@ import Blog from './pages/Blog.jsx';
 import Pricing from './pages/Pricing.jsx';
 import About from './pages/About.jsx';
 import Dashboard from './pages/Dashboard.jsx';
-import LinkPage from './pages/LinkPage.jsx';
+
 import TermsOfService from './pages/TermsOfService.jsx';
 import Youtube from './pages/Youtube.jsx';
 
@@ -38,12 +38,10 @@ const App = () => {
 
           <Route path="/" element={<Home />} />
 
-          <Route path='/dashboard' element={<Dashboard/>}/>
 
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
 
-          <Route path="/dashboard/article" element={<Article />} />
 
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Setting />} />
@@ -59,7 +57,9 @@ const App = () => {
 
           <Route path="/about" element={<About/>}/>
 
+          <Route path='/dashboard' element={<Dashboard/>}/>
     
+          <Route path="/dashboard/article" element={<Article />} />
 
           <Route path='/dashboard/youtube' element={<Youtube/>}/>
 

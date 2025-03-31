@@ -6,6 +6,10 @@ import { Link ,useNavigate} from "react-router-dom";
 
 const Hnavbar = () => {
   const { Authuser, isDarkMode,logout } = userAuthStore();
+
+  console.log("from frontend:")
+  console.log(Authuser);
+
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -65,7 +69,7 @@ const Hnavbar = () => {
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           alt="profile"
         />
-        <h2 className="font-jost">{Authuser.newUser.user}</h2>
+        <h2 className="font-jost">{Authuser.user.fullname || "example"}</h2>
         <button
           // onClick={() => setOpen(!open)}
           aria-expanded={open}

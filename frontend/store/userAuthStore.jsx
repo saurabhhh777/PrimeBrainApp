@@ -164,6 +164,17 @@ export const userAuthStore = create(persist((set) => ({
             console.log(error);
         }
 
+    },
+
+    deleteContent:async(id)=>{
+        try {
+            const res = await axiosInstance.delete(`/api/v1/content/${id}`);
+            console.log(res);
+            return res.data;
+            
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 })));

@@ -29,8 +29,9 @@ const Signin = () => {
     
     if(res){
 
-      navigate("/");
+      navigate("/dashboard");
       toast.success("Login Successfully");
+      
 
     }
     else{

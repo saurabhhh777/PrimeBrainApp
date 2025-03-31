@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MoveLeft } from "lucide-react";
+import { MoveLeft ,Trash2,Edit} from "lucide-react";
 import Layout from "./Layout";
 import { userAuthStore } from "../../store/userAuthStore";
 import toast, { Toaster } from "react-hot-toast";
@@ -612,6 +612,7 @@ const Article = () => {
               </a>
 
               {/* Edit button in the corner */}
+              <div className="flex">
               <button
                 onClick={(e) => {
                   e.stopPropagation(); // prevent handleGetByID from firing
@@ -631,8 +632,12 @@ const Article = () => {
                     : "bg-gray-200 text-[#101828] hover:bg-gray-300"
                 }`}
               >
-                Edit
+                <Edit/>
               </button>
+              <button>
+                  <Trash2/>
+              </button>
+              </div>
             </div>
           </div>
         ))}

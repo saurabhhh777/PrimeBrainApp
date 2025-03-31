@@ -111,15 +111,11 @@ export const Signup = async (req, res) => {
 
     const hashedPassword = await bcryptjs.hash(password, 10);
 
-    let user = await UserModel.create({
+    const user = await UserModel.create({
       fullname,
       email,
       password: hashedPassword
     });
-    
-    // Now populate on the returned document
-    user = await user.populate('contents');
-    
 
     const token = jwt.sign(
       { id: user._id },
@@ -127,15 +123,19 @@ export const Signup = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    const newUser = {
-      user:user.fullname,
-      email:user.email
-    }
+    // Only send fullname and email
+    const userResponse = {
+      fullname: user.fullname,
+      email: user.email
+    };
 
     return res.status(200).cookie("token", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
     }).json({
-      newUser,
+      user: userResponse,
       message: "Signup successful!",
       success: true
     });
@@ -149,19 +149,14 @@ export const Signup = async (req, res) => {
   }
 };
 
+
+
 // User login controller
 export const Signin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log(`Email from the backend : ${email}`);
-
     const user = await UserModel.findOne({ email });
-
-    console.log(`User from Signin controller :`)
-    console.log(user);
-
-    
 
     if (!user) {
       return res.status(400).json({
@@ -170,7 +165,7 @@ export const Signin = async (req, res) => {
       });
     }
 
-    const isPasswordValid = bcryptjs.compare(password, user.password);
+    const isPasswordValid = await bcryptjs.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(400).json({
@@ -185,11 +180,20 @@ export const Signin = async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    // Only send fullname and email
+    const userResponse = {
+      fullname: user.fullname,
+      email: user.email
+    };
+
     return res.status(200).cookie("token", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
     }).json({
       message: "Login successful!",
-      user,
+      user: userResponse,
       success: true
     });
   } catch (error) {
