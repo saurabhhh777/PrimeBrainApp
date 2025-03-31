@@ -24,8 +24,10 @@ const Signin = () => {
     }))
   }
 
-  const handleSubmit = ()=>{
-    const res = signin(formdata);
+  const handleSubmit = async ()=>{
+    const res = await signin(formdata);
+
+    console.log(res)
     
     if(res){
 
@@ -35,12 +37,13 @@ const Signin = () => {
 
     }
     else{
-      toast.error(`{res.data.message}`);
+      toast.error(`${res.data.message}`);
     }
 
 
 
   }
+  
 
   return (
     <div

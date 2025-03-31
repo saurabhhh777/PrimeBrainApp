@@ -67,6 +67,8 @@ export const userAuthStore = create(persist((set) => ({
             console.log(res);
             set({Authuser: res.data});
             toast.success("Signin successfully");
+            return res;
+
         } catch (error) {
             console.log(error);
             // Fixed typo in error.response
