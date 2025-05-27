@@ -46,7 +46,7 @@ const Navbar = () => {
           <Link to="/dashboard/insta">
             <h2 className="hover:text-gray-600">Instagram</h2>
           </Link>
-          <Link to="/blog">
+          <Link to="/blogs">
             <h2 className="hover:text-gray-600">Blogs</h2>
           </Link>
           
