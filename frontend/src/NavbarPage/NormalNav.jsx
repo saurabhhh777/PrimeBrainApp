@@ -44,7 +44,7 @@ const NormalNav = () => {
               </h2>
             </div>
           ) : (
-            <div>
+            <div className="flex flex-row gap-8">
               <h2>
                 <Link to="/signin">Signin</Link>
               </h2>
