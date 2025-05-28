@@ -1,5 +1,4 @@
 import React from 'react';
-import DarkModeBtn from '../components/Buttons/DarkModeBtn';
 import { userAuthStore } from '../../store/userAuthStore';
 import Footer from "./Footer";
 import NormalNav from "../NavbarPage/NormalNav.jsx";
@@ -9,14 +8,12 @@ const PrivacyPolicy = () => {
 
   return (
     <div className={`flex flex-col min-h-screen ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
-      <NormalNav />
+      <div className='pt-2'>
+        <NormalNav />
+      </div>
       
       <main className="flex-grow">
         <div className="container mx-auto px-4 py-8">
-          {/* Dark Mode Button - Positioned in top right */}
-          <div className="flex justify-end mb-6">
-            <DarkModeBtn />
-          </div>
           
           {/* Policy Content Container */}
           <div className={`max-w-4xl mx-auto ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -146,6 +143,7 @@ const PrivacyPolicy = () => {
                   >
                     saurabhhhere@gmail.com
                   </a>
+                  
                   <p className="mt-2">
                     We typically respond within 48 hours.
                   </p>
