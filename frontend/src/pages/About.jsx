@@ -1,79 +1,126 @@
 import React from 'react';
+import { userAuthStore } from '../../store/userAuthStore';
+import { FiUsers, FiTarget, FiMail } from 'react-icons/fi';
+import Navbar from "../NavbarPage/Navbar";
+import Footer from "./Footer";
 
 const About = () => {
+  const { isDarkMode } = userAuthStore();
+
   return (
-    <div className='h-screen min-w-screen bg-[#1E2939] text-white'>
-      <div className="container mx-auto px-6 py-12 h-full flex flex-col justify-center items-center">
-        {/* Page Title */}
-        <h1 className="text-5xl font-bold mb-8 text-center">
-          About Us
-        </h1>
-
-        {/* Introduction Section */}
-        <div className="max-w-3xl text-center mb-12">
-          <p className="text-lg leading-relaxed">
-            Welcome to <span className="font-semibold">Our Company</span>, where innovation meets excellence. We are dedicated to providing cutting-edge solutions that empower businesses and individuals to achieve their goals. Our team of experts is passionate about delivering high-quality products and services that make a real difference.
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-purple-50'}`}>
+      <Navbar />
+      
+      <div className="container mx-auto px-4 py-16 lg:py-24">
+        {/* Hero Section */}
+        <div className="text-center mb-20">
+          <h1 className={`text-5xl lg:text-7xl font-bold mb-6 ${isDarkMode ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400' : 'text-gray-900'}`}>
+            Innovating Tomorrow
+          </h1>
+          <p className={`text-xl lg:text-2xl max-w-3xl mx-auto ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            We're bridging the gap between technological potential and human needs through cutting-edge solutions.
           </p>
         </div>
 
-        {/* Mission Statement */}
-        <div className="bg-[#2C3A4E] p-8 rounded-lg shadow-lg mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-center">
-            Our Mission
-          </h2>
-          <p className="text-lg text-center">
-            Our mission is to simplify complexity and drive growth through innovative technology and exceptional customer service. We strive to create meaningful connections and deliver value to our clients every step of the way.
-          </p>
+        {/* Stats Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-24">
+          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
+            <FiUsers className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
+            <h3 className="text-2xl font-bold mb-2">10,000+</h3>
+            <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Active Users</p>
+          </div>
+          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
+            <FiTarget className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
+            <h3 className="text-2xl font-bold mb-2">2015</h3>
+            <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Founded In</p>
+          </div>
+          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
+            <div className="w-12 h-12 mb-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-lg flex items-center justify-center">
+              <span className="text-white text-xl font-bold">50+</span>
+            </div>
+            <h3 className="text-2xl font-bold mb-2">Team Members</h3>
+            <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Global Talent</p>
+          </div>
         </div>
 
-        {/* Team Section */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-8">
-            Meet Our Team
-          </h2>
-          <div className="flex flex-wrap justify-center gap-8">
-            {/* Team Member 1 */}
-            <div className="w-48 text-center">
-              <div className="bg-[#2C3A4E] rounded-full h-32 w-32 mx-auto mb-4 flex items-center justify-center">
-                <span className="text-4xl">👤</span>
+        {/* Mission Section */}
+        <div className={`mb-24 p-12 rounded-[2.5rem] ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
+          <div className="max-w-4xl mx-auto">
+            <h2 className={`text-4xl font-bold mb-8 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+              Our Guiding Principles
+            </h2>
+            <div className="space-y-8">
+              <div className="flex gap-6">
+                <div className={`flex-shrink-0 w-2 rounded-full ${isDarkMode ? 'bg-purple-500' : 'bg-blue-500'}`}></div>
+                <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  Technology should empower, not complicate. Our solutions combine intuitive design with robust functionality.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold">John Doe</h3>
-              <p className="text-gray-400">CEO & Founder</p>
-            </div>
-
-            {/* Team Member 2 */}
-            <div className="w-48 text-center">
-              <div className="bg-[#2C3A4E] rounded-full h-32 w-32 mx-auto mb-4 flex items-center justify-center">
-                <span className="text-4xl">👩‍💻</span>
+              <div className="flex gap-6">
+                <div className={`flex-shrink-0 w-2 rounded-full ${isDarkMode ? 'bg-purple-500' : 'bg-blue-500'}`}></div>
+                <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  Sustainability is built into every decision, from code architecture to business partnerships.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold">Jane Smith</h3>
-              <p className="text-gray-400">CTO</p>
-            </div>
-
-            {/* Team Member 3 */}
-            <div className="w-48 text-center">
-              <div className="bg-[#2C3A4E] rounded-full h-32 w-32 mx-auto mb-4 flex items-center justify-center">
-                <span className="text-4xl">👨‍🎨</span>
-              </div>
-              <h3 className="text-xl font-semibold">Mike Johnson</h3>
-              <p className="text-gray-400">Lead Designer</p>
             </div>
           </div>
         </div>
 
-        {/* Call to Action */}
-        <div className="mt-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Ready to Get Started?
+        {/* Team Section */}
+        <div className="mb-24">
+          <h2 className={`text-4xl font-bold mb-16 text-center ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+            Leadership Team
           </h2>
-          <p className="text-lg mb-6">
-            Join us on our journey to create a better future. Let's work together to achieve greatness.
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Team Member 1 */}
+            <div className={`p-8 rounded-2xl ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} transition-all`}>
+              <div className="bg-gradient-to-r from-blue-400 to-purple-400 rounded-full h-48 w-48 mx-auto mb-6 flex items-center justify-center">
+                <span className="text-6xl text-white">👤</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-2">John Doe</h3>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>CEO & Founder</p>
+            </div>
+
+            {/* Team Member 2 */}
+            <div className={`p-8 rounded-2xl ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} transition-all`}>
+              <div className="bg-gradient-to-r from-blue-400 to-purple-400 rounded-full h-48 w-48 mx-auto mb-6 flex items-center justify-center">
+                <span className="text-6xl text-white">👩💻</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Jane Smith</h3>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>CTO</p>
+            </div>
+
+            {/* Team Member 3 */}
+            <div className={`p-8 rounded-2xl ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} transition-all`}>
+              <div className="bg-gradient-to-r from-blue-400 to-purple-400 rounded-full h-48 w-48 mx-auto mb-6 flex items-center justify-center">
+                <span className="text-6xl text-white">👨🎨</span>
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Mike Johnson</h3>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Lead Designer</p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className={`text-center p-12 rounded-[2.5rem] ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
+          <h2 className={`text-4xl font-bold mb-6 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+            Ready to Transform Your Vision?
+          </h2>
+          <p className={`text-xl mb-8 max-w-2xl mx-auto ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            Let's collaborate to create solutions that drive real impact and lasting value.
           </p>
-          <button className="bg-[#4F46E5] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#4338CA] transition duration-300">
-            Contact Us
+          <button className={`inline-flex items-center px-8 py-4 rounded-full font-semibold transition-all 
+            ${isDarkMode 
+              ? 'bg-gradient-to-r from-purple-500 to-blue-500 hover:shadow-purple-lg' 
+              : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'}
+            `}>
+            <FiMail className="mr-3" />
+            Schedule Consultation
           </button>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
