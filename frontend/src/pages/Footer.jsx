@@ -82,7 +82,7 @@ const Footer = () => {
               }`}
             />
             <nav className="grid grid-cols-2 gap-2">
-              {["About", "Features", "Pricing", "Blog", "Help", "Careers"].map(
+              {["About", "Features", "Pricing", "Blogs", "Help", "Careers"].map(
                 (link) => (
                   <Link
                     key={link}
