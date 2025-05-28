@@ -2,14 +2,14 @@ import React from 'react';
 import DarkModeBtn from '../components/Buttons/DarkModeBtn';
 import { userAuthStore } from '../../store/userAuthStore';
 import Footer from "./Footer";
-import Navbar from "../NavbarPage/Navbar";
+import NormalNav from "../NavbarPage/NormalNav.jsx";
 
 const PrivacyPolicy = () => {
   const { isDarkMode } = userAuthStore();
 
   return (
     <div className={`flex flex-col min-h-screen ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
-      <Navbar />
+      <NormalNav />
       
       <main className="flex-grow">
         <div className="container mx-auto px-4 py-8">
