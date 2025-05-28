@@ -1,7 +1,8 @@
 import React from 'react';
-import { userAuthStore } from '../../store/userAuthStore';
 import { Users, Target, Mail } from 'lucide-react';
-import Navbar from "../NavbarPage/Navbar";
+
+import NormalNav from "../NavbarPage/NormalNav.jsx";
+import { userAuthStore } from '../../store/userAuthStore';
 import Footer from "./Footer";
 
 const About = () => {
@@ -9,8 +10,10 @@ const About = () => {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-purple-50'}`}>
-      <Navbar />
-      
+      <div className='pt-2'>
+        <NormalNav />
+      </div>
+
       <div className="container mx-auto px-4 py-16 lg:py-24">
         {/* Hero Section */}
         <div className="text-center mb-20">
@@ -24,17 +27,17 @@ const About = () => {
 
         {/* Stats Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-24">
-          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
+          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-[#E4E4E4] hover:bg-gray-100'} shadow-lg`}>
             <Users className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
             <h3 className="text-2xl font-bold mb-2">10,000+</h3>
             <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Active Users</p>
           </div>
-          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
+          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-[#E4E4E4] hover:bg-gray-100'} shadow-lg`}>
             <Target className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
-            <h3 className="text-2xl font-bold mb-2">2015</h3>
+            <h3 className="text-2xl font-bold mb-2">2025</h3>
             <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Founded In</p>
           </div>
-          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
+          <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-[#E4E4E4] hover:bg-gray-100'} shadow-lg`}>
             <div className="w-12 h-12 mb-4 bg-gradient-to-r from-blue-400 to-purple-400 rounded-lg flex items-center justify-center">
               <span className="text-white text-xl font-bold">50+</span>
             </div>
@@ -44,7 +47,7 @@ const About = () => {
         </div>
 
         {/* Mission Section */}
-        <div className={`mb-24 p-12 rounded-[2.5rem] ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
+        <div className={`mb-24 p-12 rounded-[2.5rem] ${isDarkMode ? 'bg-gray-800' : 'bg-[#E4E4E4]'} shadow-xl`}>
           <div className="max-w-4xl mx-auto">
             <h2 className={`text-4xl font-bold mb-8 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
               Our Guiding Principles
@@ -72,37 +75,19 @@ const About = () => {
             Leadership Team
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Team Member 1 */}
-            <div className={`p-8 rounded-2xl ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} transition-all`}>
+            {/* Only Founder */}
+            <div className={`p-8 rounded-2xl ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-[#E4E4E4] hover:bg-gray-100'} transition-all`}>
               <div className="bg-gradient-to-r from-blue-400 to-purple-400 rounded-full h-48 w-48 mx-auto mb-6 flex items-center justify-center">
                 <span className="text-6xl text-white">👤</span>
               </div>
-              <h3 className="text-2xl font-bold mb-2">John Doe</h3>
-              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>CEO & Founder</p>
-            </div>
-
-            {/* Team Member 2 */}
-            <div className={`p-8 rounded-2xl ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} transition-all`}>
-              <div className="bg-gradient-to-r from-blue-400 to-purple-400 rounded-full h-48 w-48 mx-auto mb-6 flex items-center justify-center">
-                <span className="text-6xl text-white">👩💻</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Jane Smith</h3>
-              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>CTO</p>
-            </div>
-
-            {/* Team Member 3 */}
-            <div className={`p-8 rounded-2xl ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} transition-all`}>
-              <div className="bg-gradient-to-r from-blue-400 to-purple-400 rounded-full h-48 w-48 mx-auto mb-6 flex items-center justify-center">
-                <span className="text-6xl text-white">👨🎨</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Mike Johnson</h3>
-              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Lead Designer</p>
+              <h3 className="text-2xl font-bold mb-2">Saurabh</h3>
+              <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Founder of PrimeBrain</p>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className={`text-center p-12 rounded-[2.5rem] ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-xl`}>
+        <div className={`text-center p-12 rounded-[2.5rem] ${isDarkMode ? 'bg-gray-800' : 'bg-[#E4E4E4]'} shadow-xl`}>
           <h2 className={`text-4xl font-bold mb-6 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
             Ready to Transform Your Vision?
           </h2>
