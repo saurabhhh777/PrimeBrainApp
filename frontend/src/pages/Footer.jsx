@@ -179,8 +179,8 @@ const Footer = () => {
             © {new Date().getFullYear()} PrimeBrainApp. All rights reserved.
           </p>
           <div className="mt-2 flex justify-center gap-4">
-            <a
-              href="#"
+            <Link
+              to="/privacypolicy"
               className={
                 isDarkMode
                   ? "text-gray-300 hover:text-white"
@@ -188,7 +188,7 @@ const Footer = () => {
               }
             >
               Privacy Policy
-            </a>
+            </Link>
             <Link
               to="/term-of-service"
               className={

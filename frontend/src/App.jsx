@@ -24,7 +24,8 @@ import Article from './pages/Article.jsx';
 import Tweets from './pages/Tweets.jsx';
 import Reddit from './pages/Reddit.jsx';
 import Instagram from './pages/Instagram.jsx';
-// import PrivacyPolicy from './components/pages/PrivacyPolicy.jsx';
+
+import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 
 
 
@@ -47,9 +48,7 @@ const App = () => {
           <Route path="/settings" element={<Setting />} />
           <Route path="/pricing" element={<Pricing/>}/>
           <Route path="/blogs" element={<Blog/>}/>
-
-
-          {/* <Route path="/privacy-policy" element={<PrivacyPolicy/>}/> */}
+          <Route path="/privacypolicy" element={<PrivacyPolicy/>}/>
 
           <Route path="/term-of-service" element={<TermsOfService/>}/>
 
@@ -68,6 +67,7 @@ const App = () => {
           <Route path="/dashboard/reddit" element={<Reddit/>}/>
 
           <Route path="/dashboard/insta" element={<Instagram/>}/>
+
 
 
           <Route path="*" element={<ErrorPage />} />
