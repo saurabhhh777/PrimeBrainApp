@@ -1,6 +1,6 @@
 import React from 'react';
 import { userAuthStore } from '../../store/userAuthStore';
-import { FiUsers, FiTarget, FiMail } from 'react-icons/fi';
+import { Users, Target, Mail } from 'lucide-react';
 import Navbar from "../NavbarPage/Navbar";
 import Footer from "./Footer";
 
@@ -25,12 +25,12 @@ const About = () => {
         {/* Stats Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-24">
           <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
-            <FiUsers className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
+            <Users className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
             <h3 className="text-2xl font-bold mb-2">10,000+</h3>
             <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Active Users</p>
           </div>
           <div className={`p-8 rounded-2xl transition-all ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-50'} shadow-lg`}>
-            <FiTarget className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
+            <Target className={`w-12 h-12 mb-4 ${isDarkMode ? 'text-purple-400' : 'text-blue-600'}`} />
             <h3 className="text-2xl font-bold mb-2">2015</h3>
             <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Founded In</p>
           </div>
@@ -112,9 +112,8 @@ const About = () => {
           <button className={`inline-flex items-center px-8 py-4 rounded-full font-semibold transition-all 
             ${isDarkMode 
               ? 'bg-gradient-to-r from-purple-500 to-blue-500 hover:shadow-purple-lg' 
-              : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'}
-            `}>
-            <FiMail className="mr-3" />
+              : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg'}`}>
+            <Mail className="mr-3" />
             Schedule Consultation
           </button>
         </div>
