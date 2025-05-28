@@ -1,6 +1,9 @@
 import React from 'react';
 import DarkModeBtn from '../components/Buttons/DarkModeBtn';
 import { userAuthStore } from '../../store/userAuthStore';
+import Footer from "./Footer.jsx";
+
+
 
 const PrivacyPolicy = () => {
   const { isDarkMode } = userAuthStore();
@@ -97,15 +100,16 @@ const PrivacyPolicy = () => {
             <p className="mb-4">
               For questions about this policy, contact us at: <br />
               <a 
-                href="mailto:privacy@example.com" 
+                href="mailto:saurabhhhere@gmail.com" 
                 className={`${isDarkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-800'} underline`}
               >
-                privacy@example.com
+                saurabhhhere@gmail.com
               </a>
             </p>
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
