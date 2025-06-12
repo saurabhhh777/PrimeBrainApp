@@ -5,7 +5,6 @@ import ErrorPage from './pages/ErrorPage.jsx';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Home from './pages/Home.jsx';
-import Content from './pages/Article.jsx';
 import Profile from './pages/Profile.jsx';
 
 
