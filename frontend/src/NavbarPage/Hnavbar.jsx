@@ -22,7 +22,7 @@ const Hnavbar = () => {
   }
 
   return (
-    <div className={`flex justify-between items-center mt-2 ml-2 ${isDarkMode ? "text-white" : "text-black"}`}>
+    <div className={`flex justify-between items-center p-4 pb-6 gap-4 ${isDarkMode ? "text-white" : "text-black"}`}>
       {/* Search Bar */}
       <div className={`flex items-center gap-2 rounded-full p-3 border-2 w-64 ${
         isDarkMode ? "bg-gray-900 border-gray-700" : "bg-[#e4e4e4] border-gray-300"
@@ -58,18 +58,19 @@ const Hnavbar = () => {
       )} */}
 
       {/* Profile Dropdown */}
-      <div className={`relative flex items-center justify-between gap-2 rounded-full p-2 w-52 mr-2 border-2 ${
-        isDarkMode ? "bg-gray-900 border-gray-700" : "bg-[#e4e4e4] border-gray-300"
-      }`}
-      onClick={() => setOpen(!open)}
-      
-      >
+      {Authuser && (
+        <div className={`relative flex items-center justify-between gap-2 rounded-full p-2 w-52 mr-2 border-2 ${
+          isDarkMode ? "bg-gray-900 border-gray-700" : "bg-[#e4e4e4] border-gray-300"
+        }`}
+        onClick={() => setOpen(!open)}
+        
+        >
         <img
           className="size-8 rounded-full border-2 border-gray-300"
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          src={Authuser?.avatar || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
           alt="profile"
         />
-        <h2 className="font-jost">{Authuser.user.fullname || "example"}</h2>
+        <h2 className="font-jost">{Authuser?.fullname || "example"}</h2>
         <button
           // onClick={() => setOpen(!open)}
           aria-expanded={open}
@@ -105,7 +106,8 @@ const Hnavbar = () => {
             </button>
           </div>
         )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

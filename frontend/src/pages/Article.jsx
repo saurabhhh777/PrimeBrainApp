@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MoveLeft ,Trash2,Edit} from "lucide-react";
+import { MoveLeft ,Trash2,Edit, Plus} from "lucide-react";
 import Layout from "./Layout";
 import { userAuthStore } from "../../store/userAuthStore";
 import toast, { Toaster } from "react-hot-toast";
 
 const Article = () => {
-  const { createContent, getAllContent, updateContent, isDarkMode } = userAuthStore();
+  const { createContent, getAllContent, updateContent, isDarkMode, Authuser } = userAuthStore();
 
   // Form state for new content (create mode).
   const [content, setContent] = useState({
@@ -209,23 +209,22 @@ const Article = () => {
     <Layout>
       <Toaster />
 
-      {/* Button to toggle "create new card" form */}
-      <div className={`flex mb-6 ${isFormOpen ? "justify-between" : "justify-end"}`}>
-        {isFormOpen && (
-          <div className="z-50">
-            <MoveLeft onClick={handleAddCard} />
-          </div>
+      {/* Header with title and Add Card button */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Articles</h1>
+        {Authuser && (
+          <button
+            onClick={() => setIsFormOpen((prev) => !prev)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+              isDarkMode 
+                ? "bg-blue-600 text-white hover:bg-blue-700" 
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            <Plus size={20} />
+            Add Article
+          </button>
         )}
-        <button
-          onClick={() => setIsFormOpen((prev) => !prev)}
-          className={`${
-            isDarkMode
-              ? "bg-[#1E2939] text-white"
-              : "bg-[#E4E4E4] text-[#101828]"
-          } py-2 px-4 rounded-md hover:bg-blue-600 ${isFormOpen ? "z-50" : ""}`}
-        >
-          Add Card
-        </button>
       </div>
 
       {/* CREATE FORM (New card) */}
@@ -536,9 +535,25 @@ const Article = () => {
       )}
 
       {/* Render the "article" cards */}
-      <h1 className="text-2xl font-bold mb-6">Articles</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articleCards.map((card, index) => (
+      {articleCards.length === 0 ? (
+        <div className={`text-center py-12 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
+          <p className="text-lg mb-2">You haven't saved any articles yet.</p>
+          {Authuser && (
+            <button
+              onClick={() => setIsFormOpen(true)}
+              className={`px-4 py-2 rounded-lg font-medium ${
+                isDarkMode 
+                  ? "bg-blue-600 text-white hover:bg-blue-700" 
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+            >
+              Add Your First Article
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {articleCards.map((card, index) => (
           <div
             key={index}
             data-contentid={card.contentId} // <---- using card.contentId here instead of card._id
@@ -641,7 +656,8 @@ const Article = () => {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
     </Layout>
   );
 };

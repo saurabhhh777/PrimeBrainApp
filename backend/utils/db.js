@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
 
-const connectDB = ()=>{
+const connectDB = async () => {
     try {
-        mongoose.connect(process.env.MONGO_URL);
-        console.log("Mongo DB is connected !");
-        
+        await mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/primebrain");
+        console.log("MongoDB is connected!");
     } catch (error) {
-        console.log(error);
-        
+        console.log("MongoDB connection error:", error.message);
+        console.log("Server will continue without database connection");
     }
 }
 

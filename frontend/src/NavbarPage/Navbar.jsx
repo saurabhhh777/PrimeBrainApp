@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`h-[calc(100vh-5.5rem)] box-border w-64 p-4 mt-2 rounded-2xl text-center ml-2 border-2 justify-between ${
+      className={`h-full box-border w-64 p-4 m-4 rounded-2xl text-center border-2 justify-between ${
         isDarkMode ? "bg-gray-900 border-gray-700 text-white" : "bg-[#e4e4e4] border-gray-300 text-black"
       }`}
     >
@@ -30,6 +30,9 @@ const Navbar = () => {
           )}
           <Link to="/">
             <h2 className="hover:text-gray-600">Home</h2>
+          </Link>
+          <Link to="/dashboard">
+            <h2 className="hover:text-gray-600">Dashboard</h2>
           </Link>
           <Link to="/dashboard/article">
             <h2 className="hover:text-gray-600">Article</h2>

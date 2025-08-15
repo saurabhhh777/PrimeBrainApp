@@ -16,7 +16,7 @@ router.get('/auth/google/callback', googleAuthCallback);
 // router.get('/auth/github/callback', githubAuthCallback);
 
 
-router.route("/check",isAuth).get(checkAuth);
+router.route("/check").get(isAuth, checkAuth);
 
 router.route("/updateProfile/name").post(isAuth,updateProfileName);
 

@@ -1,41 +1,56 @@
 import React, { useState, useEffect } from "react";
-import { Edit, Trash2 } from "lucide-react"; // Import icons
+import { Edit, Trash2, Plus } from "lucide-react"; // Import icons
 import Layout from "./Layout";
 import { userAuthStore } from "../../store/userAuthStore";
+import { axiosInstance } from "../../lib/axios.jsx";
 import toast from "react-hot-toast";
 
 const Youtube = () => {
-  const { getAllContent, isDarkMode, updateContent, deleteContent } = userAuthStore();
-  const [allContent, setAllContent] = useState([]);
+  const { isDarkMode, Authuser } = userAuthStore();
+  const [socialLinks, setSocialLinks] = useState([]);
   const [editingCard, setEditingCard] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [editFormData, setEditFormData] = useState({
     title: "",
     description: "",
-    link: "",
+    url: "",
     tags: []
   });
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    url: '',
+    tags: ''
+  });
 
-  // Fetch content
-  const loadContent = async () => {
+  // Fetch social links
+  const loadSocialLinks = async () => {
     try {
-      const res = await getAllContent();
-      if (Array.isArray(res.data)) {
-        setAllContent(res.data);
-      } else if (res.data) {
-        setAllContent([res.data]);
+      setLoading(true);
+      const res = await axiosInstance.get('/api/v1/social-links/user');
+      console.log("Fetched social links:", res.data);
+
+      if (res.data.success && res.data.links) {
+        setSocialLinks(res.data.links);
+      } else {
+        setSocialLinks([]);
       }
     } catch (error) {
-      console.error("Error fetching content:", error);
+      console.error("Error fetching social links:", error);
+      setSocialLinks([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadContent();
+    loadSocialLinks();
   }, []);
 
-  // Filter YouTube videos
-  const youtubeCards = allContent.filter(
-    (item) => item.link && (item.link.includes("youtube.com") || item.link.includes("youtu.be"))
+  // Only show YouTube links
+  const youtubeCards = socialLinks.filter(
+    (item) => item.platform === 'youtube'
   );
 
   // Handle edit button click
@@ -44,8 +59,8 @@ const Youtube = () => {
     setEditFormData({
       title: card.title,
       description: card.description,
-      link: card.link,
-      tags: [...card.tags]
+      url: card.url,
+      tags: card.tags ? card.tags.map(tag => tag.title || tag) : []
     });
   };
 
@@ -65,10 +80,19 @@ const Youtube = () => {
   // Handle form submission
   const handleEditSubmit = async (cardId) => {
     try {
-      await updateContent(cardId, editFormData);
+      const tagsArray = editFormData.tags.filter(tag => tag.trim());
+      const socialLinkData = {
+        platform: 'youtube',
+        url: editFormData.url,
+        title: editFormData.title,
+        description: editFormData.description,
+        tags: tagsArray
+      };
+      
+      await axiosInstance.put(`/api/v1/social-links/${cardId}`, socialLinkData);
       toast.success("Video updated successfully");
       setEditingCard(null);
-      loadContent(); // Refresh the list
+      loadSocialLinks(); // Refresh the list
     } catch (error) {
       toast.error("Failed to update video");
       console.error("Error updating content:", error);
@@ -78,20 +102,175 @@ const Youtube = () => {
   // Handle delete
   const handleDelete = async (cardId) => {
     try {
-      await deleteContent(cardId);
+      await axiosInstance.delete(`/api/v1/social-links/${cardId}`);
       toast.success("Video deleted successfully");
-      loadContent(); // Refresh the list
+      loadSocialLinks(); // Refresh the list
     } catch (error) {
       toast.error("Failed to delete video");
       console.error("Error deleting content:", error);
     }
   };
 
+  const handleAddYouTube = async (e) => {
+    e.preventDefault();
+    try {
+      const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+      const socialLinkData = {
+        platform: 'youtube',
+        url: formData.url,
+        title: formData.title,
+        description: formData.description,
+        tags: tagsArray
+      };
+      
+      await axiosInstance.post('/api/v1/social-links', socialLinkData);
+      toast.success('YouTube video added successfully!');
+      setShowAddForm(false);
+      setFormData({ title: '', description: '', url: '', tags: '' });
+      loadSocialLinks();
+    } catch (error) {
+      console.error('Error adding YouTube video:', error);
+      toast.error('Failed to add YouTube video');
+    }
+  };
+
   return (
     <Layout>
-      <h1 className="text-2xl font-bold mb-6">YouTube Videos</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {youtubeCards.map((card) => (
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">YouTube Videos</h1>
+        {Authuser && (
+          <button
+            onClick={() => setShowAddForm(true)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+              isDarkMode 
+                ? "bg-blue-600 text-white hover:bg-blue-700" 
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            <Plus size={20} />
+            Add YouTube Video
+          </button>
+        )}
+      </div>
+
+      {/* Add YouTube Form */}
+      {showAddForm && (
+        <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50`}>
+          <div className={`w-full max-w-md p-6 rounded-lg ${
+            isDarkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+          }`}>
+            <h2 className="text-xl font-bold mb-4">Add YouTube Video</h2>
+            <form onSubmit={handleAddYouTube} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Title</label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData({...formData, title: e.target.value})}
+                  className={`w-full p-3 rounded-lg border ${
+                    isDarkMode 
+                      ? "bg-gray-700 border-gray-600 text-white" 
+                      : "bg-white border-gray-300 text-gray-900"
+                  }`}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  rows="3"
+                  className={`w-full p-3 rounded-lg border ${
+                    isDarkMode 
+                      ? "bg-gray-700 border-gray-600 text-white" 
+                      : "bg-white border-gray-300 text-gray-900"
+                  }`}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">YouTube URL</label>
+                <input
+                  type="url"
+                  value={formData.url}
+                  onChange={(e) => setFormData({...formData, url: e.target.value})}
+                  className={`w-full p-3 rounded-lg border ${
+                    isDarkMode 
+                      ? "bg-gray-700 border-gray-600 text-white" 
+                      : "bg-white border-gray-300 text-gray-900"
+                  }`}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Tags (comma-separated)</label>
+                <input
+                  type="text"
+                  value={formData.tags}
+                  onChange={(e) => setFormData({...formData, tags: e.target.value})}
+                  className={`w-full p-3 rounded-lg border ${
+                    isDarkMode 
+                      ? "bg-gray-700 border-gray-600 text-white" 
+                      : "bg-white border-gray-300 text-gray-900"
+                  }`}
+                  placeholder="youtube, tutorial, programming"
+                />
+              </div>
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  className={`px-6 py-2 rounded-lg font-medium ${
+                    isDarkMode 
+                      ? "bg-blue-600 text-white hover:bg-blue-700" 
+                      : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
+                >
+                  Add Video
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAddForm(false)}
+                  className={`px-6 py-2 rounded-lg font-medium ${
+                    isDarkMode 
+                      ? "bg-gray-600 text-white hover:bg-gray-700" 
+                      : "bg-gray-300 text-gray-700 hover:bg-gray-400"
+                  }`}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Loading State */}
+      {loading ? (
+        <div className={`text-center py-12 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p>Loading YouTube videos...</p>
+        </div>
+      ) : youtubeCards.length === 0 ? (
+        <div className={`text-center py-12 ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>
+          <p className="text-lg mb-2">You haven't saved any YouTube videos yet.</p>
+          {Authuser && (
+            <button
+              onClick={() => setShowAddForm(true)}
+              className={`px-4 py-2 rounded-lg font-medium ${
+                isDarkMode 
+                  ? "bg-blue-600 text-white hover:bg-blue-700" 
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+            >
+              Add Your First YouTube Video
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {youtubeCards.map((card) => (
           <div
             key={card._id}
             className={`${
@@ -104,9 +283,11 @@ const Youtube = () => {
             <div className="w-full aspect-video">
               <iframe
                 src={`https://www.youtube.com/embed/${
-                  card.link.includes("v=")
-                    ? card.link.split("v=")[1].split("&")[0]
-                    : card.link.split("/").pop()
+                  card.url.includes("v=")
+                    ? card.url.split("v=")[1].split("&")[0]
+                    : card.url.includes("youtu.be/")
+                    ? card.url.split("youtu.be/")[1].split("?")[0]
+                    : card.url.split("/").pop()
                 }`}
                 title={card.title}
                 allowFullScreen
@@ -199,7 +380,7 @@ const Youtube = () => {
                   ))}
                 </div>
                 <a
-                  href={card.link}
+                  href={card.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline text-sm"
@@ -210,7 +391,8 @@ const Youtube = () => {
             )}
           </div>
         ))}
-      </div>
+        </div>
+      )}
     </Layout>
   );
 };

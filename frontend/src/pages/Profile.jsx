@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "./Layout"; // or wherever your Layout is
 import { userAuthStore } from "../../store/userAuthStore";
 import { Github, Linkedin, Globe, Twitter } from "lucide-react";
+import { axiosInstance } from "../../lib/axios.jsx";
 // Add more icons as needed
 
 const Profile = () => {
-  const { isDarkMode } = userAuthStore();
+  const { isDarkMode, Authuser } = userAuthStore();
 
   // Sample user data—pull from your store or backend in real app
   const [user, setUser] = useState({
@@ -23,6 +24,14 @@ const Profile = () => {
 
   // Internal edit state
   const [isEditing, setIsEditing] = useState(false);
+
+  // Real stats data
+  const [stats, setStats] = useState({
+    posts: 0,
+    projects: 0,
+    following: 0,
+    followers: 0
+  });
 
   // We copy the user data for editing
   const [editData, setEditData] = useState({ ...user });
@@ -71,6 +80,38 @@ const Profile = () => {
     // In a real app, persist changes to backend or store
     setUser({ ...editData });
     setIsEditing(false);
+  };
+
+  // Fetch real stats data
+  useEffect(() => {
+    if (Authuser) {
+      fetchUserStats();
+    }
+  }, [Authuser]);
+
+  const fetchUserStats = async () => {
+    try {
+      // Fetch content counts from different endpoints
+      const [contentRes, blogRes] = await Promise.all([
+        axiosInstance.get('/api/v1/content/'),
+        axiosInstance.get('/api/v1/blog/user/blogs')
+      ]);
+
+      const content = contentRes.data || [];
+      const blogs = blogRes.data?.blogs || [];
+
+      // Count total posts (content + blogs)
+      const totalPosts = content.length + blogs.length;
+
+      setStats({
+        posts: totalPosts,
+        projects: blogs.length, // Using blogs as projects for now
+        following: 150, // This would come from a followers/following system
+        followers: 340  // This would come from a followers/following system
+      });
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+    }
   };
 
   /**
@@ -316,10 +357,10 @@ const Profile = () => {
             >
               <h2 className="font-semibold text-lg mb-2">Stats</h2>
               <ul className="space-y-1 text-sm">
-                <li>Posts: 42</li>
-                <li>Projects: 10</li>
-                <li>Following: 150</li>
-                <li>Followers: 340</li>
+                <li>Posts: {stats.posts}</li>
+                <li>Projects: {stats.projects}</li>
+                <li>Following: {stats.following}</li>
+                <li>Followers: {stats.followers}</li>
               </ul>
             </div>
             <div

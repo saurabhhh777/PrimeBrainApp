@@ -9,35 +9,6 @@ import UserModel from "../models/user.model.js";
 dotenv.config();
 
 
-// Google OAuth Configuration
-
-
-// // GitHub OAuth Configuration
-// passport.use(new GitHubStrategy({
-//     clientID: process.env.GITHUB_CLIENT_ID,
-//     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-//     callbackURL: "/auth/github/callback"
-//   },
-//   async (accessToken, refreshToken, profile, done) => {
-//     try {
-//       let user = await UserModel.findOne({ githubId: profile.id });
-      
-//       if (!user) {
-//         user = await UserModel.create({
-//           fullname: profile.displayName || profile.username,
-//           email: profile.emails?.[0]?.value || `${profile.username}@github.com`,
-//           password: bcryptjs.hashSync(Math.random().toString(36), 10),
-//           githubId: profile.id
-//         });
-//       }
-      
-//       return done(null, user);
-//     } catch (error) {
-//       return done(error, null);
-//     }
-//   }
-// ));
-
 // OAuth controller methods
 export const googleAuth = passport.authenticate('google', {
   scope: ['profile', 'email']
@@ -46,26 +17,28 @@ export const googleAuth = passport.authenticate('google', {
 export const googleAuthCallback = (req, res, next) => {
   passport.authenticate('google', async (err, user) => {
     if (err) {
-      return res.status(500).json({
-        message: "Authentication failed",
-        success: false
-      });
+      console.error('Google OAuth error:', err);
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      return res.redirect(`${frontendUrl}/signin?error=auth_failed`);
     }
     if (!user) {
-      return res.status(400).json({
-        message: "User not found or could not be created",
-        success: false
-      });
+      const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+      return res.redirect(`${frontendUrl}/signin?error=user_not_found`);
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
-    return res.status(200).cookie("token", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    }).json({
-      message: "Google login successful!",
-      success: true
+    // Set the JWT token in an HTTP-only cookie
+    res.cookie("token", token, {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax'
     });
+
+    // Redirect to frontend dashboard
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    return res.redirect(`${frontendUrl}/dashboard?auth=success`);
   })(req, res, next);
 };
 
@@ -120,7 +93,7 @@ export const Signup = async (req, res) => {
     const token = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "30d" }
     );
 
     // Only send fullname and email
@@ -130,10 +103,10 @@ export const Signup = async (req, res) => {
     };
 
     return res.status(200).cookie("token", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      sameSite: 'lax'
     }).json({
       user: userResponse,
       message: "Signup successful!",
@@ -177,7 +150,7 @@ export const Signin = async (req, res) => {
     const token = jwt.sign(
       { id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "30d" }
     );
 
     // Only send fullname and email
@@ -187,10 +160,10 @@ export const Signin = async (req, res) => {
     };
 
     return res.status(200).cookie("token", token, {
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      sameSite: 'lax'
     }).json({
       message: "Login successful!",
       user: userResponse,

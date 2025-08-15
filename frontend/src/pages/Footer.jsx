@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { MoveRight, Github, Linkedin, Twitter } from "lucide-react";
 import { userAuthStore } from "../../store/userAuthStore";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "../../lib/axios.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 const mypic =
   "https://res.cloudinary.com/dongxnnnp/image/upload/v1739618128/urlShortner/rgwojzux26zzl2tc4rmm.webp";
 
 const Footer = () => {
   const { isDarkMode } = userAuthStore();
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFeaturesClick = () => {
     const featuresSection = document.getElementById("features");
@@ -16,12 +20,51 @@ const Footer = () => {
     }
   };
 
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!email.trim()) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await axiosInstance.post("/api/v1/newsletter/subscribe", {
+        email: email.trim(),
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setEmail("");
+      } else {
+        toast.error(response.data.message || "Subscription failed");
+      }
+    } catch (error) {
+      console.error("Newsletter subscription error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to subscribe to newsletter";
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <footer
-      className={`w-full px-6 py-12 md:px-12 lg:px-24 ${
-        isDarkMode ? "bg-gray-900 text-white" : "bg-[#e4e4e4] text-gray-900"
-      }`}
-    >
+    <>
+      <Toaster />
+      <footer
+        className={`w-full px-6 py-12 md:px-12 lg:px-24 ${
+          isDarkMode ? "bg-gray-900 text-white" : "bg-[#e4e4e4] text-gray-900"
+        }`}
+      >
       <div className="mx-auto max-w-7xl">
         {/* Top Section */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
@@ -50,25 +93,34 @@ const Footer = () => {
                 isDarkMode ? "border-white" : "border-black"
               }`}
             />
-            <form className="flex gap-2">
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isSubmitting}
                 className={`w-full rounded-lg border px-4 py-2 ${
                   isDarkMode
                     ? "bg-gray-800 text-white border-gray-700"
                     : "bg-white text-gray-900 border-gray-300"
                 }`}
+                required
               />
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className={`flex items-center gap-2 rounded-lg px-6 py-2 ${
                   isDarkMode
-                    ? "bg-white text-black hover:bg-gray-200"
-                    : "bg-black text-white hover:bg-gray-800"
+                    ? "bg-white text-black hover:bg-gray-200 disabled:opacity-50"
+                    : "bg-black text-white hover:bg-gray-800 disabled:opacity-50"
                 }`}
               >
-                Join <MoveRight size={18} />
+                {isSubmitting ? "Joining..." : (
+                  <>
+                    Join <MoveRight size={18} />
+                  </>
+                )}
               </button>
             </form>
           </div>
@@ -202,7 +254,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
+      </footer>
+    </>
   );
 };
 
